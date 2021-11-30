@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Connexion | {{ parent() }}{% endblock %}
+
+{% block body %}
+<div class="w3-main" style="margin-left:250px">{# ATTENTION : Div non fermante pour que celà fonctionne #}
+    <div class="w3-container w3-content w3-padding-64" style="max-width:800px">
+
+        <form method="post">
+            {% if error %}
+                <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+            {% endif %}
+
+            {% if app.user %}
+                <div class="mb-3">
+                    You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Déconnexion</a>
+                </div>
+            {% endif %}
+
+            <h1 class="w3-wide w3-margin-bottom">Connectez-vous !</h1>
+            <label class="" for="inputUsername">Votre nom d'utilisateur</label>
+            <input type="text" value="{{ last_username }}" name="username" id="inputUsername" class="w3-input w3-border w3-light-grey w3-margin-top w3-margin-bottom" autocomplete="username" required autofocus>
+            <label class="" for="inputPassword">Votre mot de passe</label>
+            <input type="password" name="password" id="inputPassword" class="w3-input w3-border w3-light-grey w3-margin-bottom w3-margin-top" autocomplete="current-password" required>
+
+            <input type="hidden" name="_csrf_token"
+                value="{{ csrf_token('authenticate') }}"
+            >
+
+            {#
+                Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
+                See https://symfony.com/doc/current/security/remember_me.html
+
+                <div class="checkbox mb-3">
+                    <label>
+                        <input type="checkbox" name="_remember_me"> Remember me
+                    </label>
+                </div>
+            #}
+            <div class="w3-center">
+                <button class="w3-button w3-green w3-margin" type="submit">
+                    Connexion
+                </button>
+            </div>
+        </form>
+
+    </div>
+{% endblock %}

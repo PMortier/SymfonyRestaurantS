@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ formName }} | {{ parent() }}{% endblock %}
+
+{% block body %}
+<div class="w3-main" style="margin-left:250px">{# ATTENTION : Div non fermante pour que celà fonctionne #}
+
+	<!-- Dataform Section -->
+	<div class="w3-container w3-content w3-padding-64" style="max-width:800px">
+		<h1 class="w3-wide">{{ formName }}</h1>
+		{{ form(dataForm) }}
+	</div>
+{% endblock %}

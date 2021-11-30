@@ -2,18 +2,33 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        {# Run `composer require symfony/webpack-encore-bundle`
-           and uncomment the following Encore helpers to start using Symfony UX #}
+        <title>{% block title %}RestaurantS{% endblock %}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         {% block stylesheets %}
-            {#{{ encore_entry_link_tags('app') }}#}
+            <link rel="stylesheet" href="{{ asset('/assets/css/styles-w3.css') }}">
+            <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+            <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+            <link rel="stylesheet" href="{{ asset('/assets/css/styles.css') }}">
         {% endblock %}
 
         {% block javascripts %}
-            {#{{ encore_entry_script_tags('app') }}#}
+            <script src="{{ asset('/assets/js/scripts-w3.js') }}"></script>
         {% endblock %}
     </head>
-    <body>
+    <body class="w3-content" style="max-width:1200px">
+        {% include 'layout/sidebar.html.twig' %}
+        {% include 'layout/header.html.twig' %}
+        {# Affichage Flag Bag #}
+        {% for message in app.session.flashbag.get('message') %}
+            <div class="w3-panel w3-pale-yellow w3-display-container w3-border" style="margin-left:250px;color:black;">
+                <p>{{message}}</p>
+            </div>
+        {% endfor %}
+
         {% block body %}{% endblock %}
+        {% include 'layout/newsletter-modal.html.twig' %}
+        {% include 'layout/subscribe.html.twig' %}
+        {% include 'layout/footer.html.twig' %}
     </body>
 </html>

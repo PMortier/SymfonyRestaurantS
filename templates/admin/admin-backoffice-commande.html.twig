@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Admin | {{ parent() }}{% endblock %}
+
+{% block body %}
+
+<div class="w3-main" style="margin-left:250px"> {# ATTENTION : Div non fermante pour que cela fonctionne #}
+    <div class="w3-container w3-content">
+        <h1 class="w3-margin-top w3-margin-bottom">Admin | Gestion des commandes</h1>
+        <h2 class="w3-margin-top w3-margin-bottom">Liste des commandes</h2>
+
+        <p class="w3-red">Info > Fonctions de gestion des commandes à créer</p>
+
+    
+        {# <table class="w3-table w3-centered w3-small w3-margin-top w3-margin-bottom">
+            <thead>
+                <th class="w3-border w3-black">Id</th>
+                <th class="w3-border w3-black">Rôles</th>
+                <th class="w3-border w3-black">Actions</th>
+            </thead>
+            <tbody class="w3-border">
+                {% for commande in commandes %}
+                    <tr class="w3-border">
+                        <td>{{ user.username }}</td>
+                        <td>{{ user.roles|join(', ') }}</td>
+                        <td>
+                            <a href=""><i class="fa fa-edit" style="font-size:20px;color:blue; padding:5px; margin-right:20px;"></i></a>
+                            <a href=""><i class="fa fa-trash" style="font-size:20px; color:red; padding:5px; margin-right:20px;"></i></a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table> #}
+    </div>
+
+{% endblock %}

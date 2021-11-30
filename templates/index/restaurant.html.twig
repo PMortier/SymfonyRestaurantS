@@ -1,0 +1,112 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} {{ parent() }} {% endblock %}
+
+{% block body %}
+	<!-- !PAGE CONTENT! -->
+	<div class="w3-main" style="margin-left:250px"> {# ATTENTION : Div non fermante pour que cela fonctionne #}
+
+		<!-- Image header -->
+		<div class="w3-display-container w3-container">
+			<img src="{{ asset('/assets/img/imgheader.jpg') }}" alt="" style="width:100%">
+			<div class="w3-display-topleft w3-text-white" style="padding:24px 48px">
+				<h2 style="border-bottom:6px solid white;padding-bottom:10px;">Restaurant {{ category.name }}</h2>
+                <h1 class="w3-xxxlarge w3-hide-small"><b>{{ restaurant.name }}</b></h1>
+				<h1 class="w3-hide-large w3-hide-medium">{{ restaurant.name }}</h1>
+				<h1 class="w3-hide-small">Découvrez nos plats !</h1>
+                {% if is_granted('ROLE_RESTAURATEUR') %}
+                    <p>
+                        <p>Gestion du restaurant</p>
+                        <a href="{{ path('restaurant_update', {'restaurantId' : restaurant.id}) }}" class="w3-button w3-blue w3-padding-large w3-margin-right">Modifier</a>
+                        <a href="{{ path('restaurant_delete', {'restaurantId' : restaurant.id}) }}" class="w3-button w3-red w3-padding-large w3-margin-right">Supprimer</a>
+                    </p>
+                {% endif %}
+			</div>
+		</div>
+
+        <!-- Récapitulatif de la commande en cours -->
+        {% if is_granted('ROLE_CLIENT') %}
+            {% if activeCommande.reservations is defined %}
+                <div class="w3-display-container w3-container w3-center w3-padding-16 w3-margin" style="border:4px solid green;">
+                    <h2><b>Récapitulatif de la commande en cours</b></h2>
+                    {% for reservation in activeCommande.reservations %}
+                        <p><i class="fa fa-plus-circle"></i> Plat : {{ reservation.plat.name }} | Quantité : {{ reservation.quantity }} | Sous-total : {{ reservation.quantity * reservation.plat.price }} €</p>
+                    {% endfor %}
+                    <p><b>Total de la commande : {{ totalPrice }} €</b></p>
+                    <p>
+                        <a href="{{ path('commande_validate', {'restaurantId' : restaurant.id}) }}" class="w3-button w3-green w3-padding-large w3-large">Valider la commande</a>
+                    </p>
+                </div>
+            {% endif %}
+        {% endif %}
+
+        <!-- Description du restaurant -->
+        <div class="w3-display-container w3-container w3-center w3-padding-24">
+            <h2><b>Qui sommes-nous ?</b></h2>
+            <p style="margin-bottom:30px">{{ restaurant.description }}</p>
+            <h3><b>Où nous trouver ?</b></h3>
+            <p style="margin-bottom:30px">{{ restaurant.streetnumber }} {{ restaurant.street }}<br>{{ restaurant.cp }} {{ restaurant.city }}</p>
+            <p><b>Jours et horaires</b></p>
+            <p>{{ restaurant.openingDays|join(', ') }}</p>
+            <p>{{ restaurant.openingTime }} h - {{ restaurant.closingTime }} h</p>
+        </div>
+
+		<!-- Product grid -->
+        <div class="w3-container w3-text-grey" id="jeans">
+			<p>Nos {{ plats|length }} spécialités</p>
+		</div>
+        {% if is_granted('ROLE_RESTAURATEUR') %}
+            <a href="{{ path('plat_create', {'restaurantId' : restaurant.id}) }}" class="w3-button w3-green w3-small w3-margin">Créer un nouveau plat</a>
+        {% endif %}
+        
+        <div class="w3-display-container w3-container" style="margin-bottom:30px">
+            <table class="w3-table w3-bordered">
+                <tbody>
+                    {% for plat in plats %}
+                        <tr>
+                            <td class="w3-center">
+                            <img src="{{ asset('/assets/img/' ~ plat.photo) }}" style="height:250px">
+                            {% if is_granted('ROLE_RESTAURATEUR') %}
+                                <p style="text-align:center">Gestion du plat :
+                                    <a href="{{ path('plat_update', {'platId' : plat.id}) }}" class="w3-button w3-blue w3-small w3-margin-top w3-margin-right">Modifier</a>
+                                    <a href="{{ path('plat_delete', {'platId' : plat.id}) }}" class="w3-button w3-red w3-small w3-margin-top">Supprimer</a>
+                                </p>
+                            {% endif %}
+                            </td>
+                            <td class="w3-center">
+                                <h3><b>{{ plat.name }}</b></h3>
+                                <p>{{ plat.description }}</p>
+                                <p>Prix : <b>{{ plat.price|number_format(2, ',') }} €</b></p>
+                                {% if is_granted('ROLE_CLIENT') %}
+                                    {% if activeCommande.reservations is defined %}
+                                        <p style="color:green;"><i class="fa fa-info-circle"></i> Commande en cours dans ce restaurant</p>
+                                    {% else %}
+                                        <p><i class="fa fa-info-circle"></i> Pas de commande en cours dans ce restaurant</p>
+                                    {% endif %}
+                                {% endif %}
+                                <p>
+                                    {% if activeCommande.reservations is defined %}
+                                        {% for reservation in activeCommande.reservations %}
+                                            {% if reservation.plat.id == plat.id %}
+                                                <b style="color:green;">Plat(s) réservé(s) : {{ reservation.quantity }}</b>
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endif %}
+                                </p>
+                                <a href="{{ path('reservation', {'platId':plat.id}) }}" class="w3-button w3-black  w3-margin-right">Ajouter
+                                    <i class="fa fa-cart-plus"></i>
+                                </a>
+                                <a href="{{ path('reservation_delete', {'platId':plat.id}) }}" class="w3-button w3-black">Retirer
+                                    <i class="fa fa-shopping-cart"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+		<!-- End page content -->
+
+	{% endblock %}
+
+

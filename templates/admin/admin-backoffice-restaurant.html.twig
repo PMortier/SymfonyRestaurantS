@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Admin | {{ parent() }}{% endblock %}
+
+{% block body %}
+
+<div class="w3-main" style="margin-left:250px"> {# ATTENTION : Div non fermante pour que cela fonctionne #}
+    <div class="w3-container w3-content">
+
+        <h1 class="w3-margin-top w3-margin-bottom">Admin | Gestion des restaurants</h1>
+        <h2 class="w3-margin-top w3-margin-bottom">Liste des restaurants</h2>
+
+        <a href="{{path('admin_restaurant_create')}}" class="w3-button w3-black">Créer un nouveau restaurant</a>
+
+        <table class="w3-table w3-centered w3-small w3-margin-top w3-margin-bottom">
+            <thead>
+                <th class="w3-border w3-black">Categorie</th>
+                <th class="w3-border w3-black">Nom</th>
+                <th class="w3-border w3-black">Description</th>
+                <th class="w3-border w3-black">Ville</th>
+                <th class="w3-border w3-black">Adresse</th>
+                <th class="w3-border w3-black">Jours d'ouverture</th>
+                <th class="w3-border w3-black">Horaires</th>
+            </thead>
+            <tbody class="w3-border">
+                {% for restaurant in restaurants %}
+                    <tr class="w3-border">
+                        <td>{{ restaurant.category.name }}</td>
+                        <td>{{ restaurant.name }}</td>
+                        <td>{{ restaurant.description }}</td>
+                        <td>{{ restaurant.cp }}</br>{{ restaurant.city }}</td>
+                        <td>{{ restaurant.streetNumber}} {{ restaurant.street }}</td>
+                        <td>{{ restaurant.openingDays|join(', ')}}</td>
+                        <td class="w3-border-right">{{ restaurant.openingTime }}h - {{ restaurant.closingTime }}h</td>
+                    </tr>
+                    <tr>
+                        <td colspan="7" class="w3-border">
+                            <a href="{{ path('admin_restaurant_update', {'restaurantId' : restaurant.id}) }}"><i class="fa fa-edit" style="font-size:28px;color:blue; padding:5px; margin-right:20px;"></i></a>
+                            <a href="{{ path('admin_restaurant_delete', {'restaurantId' : restaurant.id}) }}"><i class="fa fa-trash" style="font-size:28px; color:red; padding:5px; margin-right:20px;"></i></a>
+                            <a href="{{ path('admin_plat_create', {'restaurantId':restaurant.id}) }}"><i class="fa fa-cutlery" style="font-size:28px;color:green; padding:5px;"></i><i class="fa fa-plus" style="margin-right:20px;"></i></a>
+                            <a onclick="myAccFunc('{{ restaurant.id }}')" href="javascript:void(0)" id="myBtn"><i class="fa fa-cutlery" style="font-size:28px;color:green; padding:5px;"></i><i class="fa fa-chevron-down"></i></a>
+                        </td>
+                    </tr>
+                    {% if restaurant.plats is defined %}
+                        <tr class="w3-border">
+                            <td colspan="8">
+                                <p><b>{{ restaurant.plats|length }} plats proposés</b></p>
+                                <div class="w3-margin-left w3-margin-right w3-hide" id="{{ restaurant.id }}">
+                                    {% for plat in restaurant.plats %}
+                                        <p class="w3-left-align w3-margin-bottom"><b>{{ plat.name }}</b> | {{ plat.description|slice(0,60) }}... | <b>{{ plat.price }} €</b> <a href="{{ path('admin_plat_update', {'platId':plat.id}) }}"><i class="fa fa-edit" style="font-size:20px;color:blue; margin-left:15px;"></i></a> <a href="{{ path('admin_plat_delete', {'platId':plat.id}) }}"><i class="fa fa-trash" style="font-size:20px;color:red; margin-left:15px;"></i></a></p>
+                                    {% endfor %}
+                                </div>
+                            </td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}
+

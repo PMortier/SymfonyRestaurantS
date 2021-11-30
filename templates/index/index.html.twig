@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }}{% endblock %}
+
+{% block body %}
+<!-- !PAGE CONTENT! -->
+<div class="w3-main" style="margin-left:250px"> {# ATTENTION : Div non fermante pour que celà fonctionne #}
+
+	<!-- Image header -->
+	<div class="w3-display-container w3-container">
+		<img src="{{ asset('/assets/img/imgheader.jpg') }}" alt="" style="width:100%">
+		<div class="w3-display-topleft w3-text-white" style="padding:24px 48px">
+			<h1 class="w3-jumbo w3-hide-small">Bienvenue {% if user is defined and user is not null %}
+			{{ user.username }}{% endif %}</h1>
+			<h1 class="w3-hide-large w3-hide-medium"><b>Bienvenue {% if user is defined and user is not null %}
+			{{ user.username }}{% endif %}</b></h1>
+			<h2>Découvrez notre sélection de restaurants</h2>
+		</div>
+	</div>
+
+	<div class="w3-container w3-text-grey" id="jeans">
+		<p>8 restaurants à découvrir !</p>
+	</div>
+
+	<!-- Product grid -->
+	<div class="w3-row w3-grayscale">
+		{% for i in 1..4 %}
+			<div class="w3-col l3 s6">
+				<div class="w3-container">
+					<div class="w3-display-container">
+						<img src="{{ asset('/assets/img/plat_' ~ random(1,5) ~ '.jpg') }}" style="width:100%">
+						<div class="w3-display-middle w3-display-hover">
+							<a href="{{path('restaurant', { 'restaurantId' : restaurants[i].id } )}}"><button class="w3-button w3-black">Découvrez !
+								<i class="fa fa-eye"></i>
+							</button></a>
+						</div>
+					</div>
+					<div style="min-height:40px">
+						<p>{{ restaurants[i].name }}</p>
+					</div>
+				</div>
+				<div class="w3-container">
+					<div class="w3-display-container">
+						<img src="{{ asset('/assets/img/plat_' ~ random(1,5) ~ '.jpg') }}" style="width:100%">
+						<div class="w3-display-middle w3-display-hover">
+							<a href="{{path('restaurant', { 'restaurantId' : restaurants[i].id } )}}"><button class="w3-button w3-black">Découvrez !
+								<i class="fa fa-eye"></i>
+							</button></a>
+						</div>
+					</div>
+					<div style="min-height:40px">
+						<p>{{ restaurants[i+4].name }}</p>
+					</div>
+				</div>
+			</div>
+		{% endfor %}	
+	</div>
+	<!-- End page content -->
+
+{% endblock %}

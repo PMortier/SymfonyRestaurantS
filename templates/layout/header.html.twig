@@ -1,0 +1,41 @@
+
+<!-- Top menu on small screens -->
+<header class="w3-bar w3-top w3-hide-large w3-black w3-xlarge">
+	<div class="w3-bar-item w3-padding-24 w3-wide">RestaurantS</div>
+	<a href="javascript:void(0)" class="w3-bar-item w3-button w3-padding-24 w3-right" onclick="w3_open()">
+		<i class="fa fa-bars"></i>
+	</a>
+</header>
+
+<!-- Overlay effect when opening sidebar on small screens -->
+<div class="w3-overlay w3-hide-large" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
+
+<div class="w3-main" style="margin-left:250px">
+	<!-- Push down content on small screens -->
+	<div class="w3-hide-large" style="margin-top:83px"></div>
+
+	<!-- Top header -->
+	<header class="w3-container w3-xlarge">
+		<p class="w3-left w3-button" style="margin-top:18px;"><a href="{{ path('index') }}"><i class="fa fa-home"></i></a></p>
+		{% if is_granted('ROLE_ADMIN') %}
+			<div class="w3-left" style="margin-top:18px;">
+				<a onclick="myAccFunc('admin-backoffice')" href="javascript:void(0)" class="w3-button w3-block w3-white w3-left-align" id="myBtn"><i class="fa fa-cogs"></i> <i class="fa fa-caret-down"></i></a>
+				<div id="admin-backoffice" class="w3-bar-block w3-hide w3-padding-large w3-medium">
+					<a href="{{path('admin_backoffice_restaurant')}}" class="w3-bar-item w3-button"><i class="fa fa-caret-right w3-margin-right"></i>Gestion des restaurants</a>
+					<a href="{{path('admin_backoffice_user')}}" class="w3-bar-item w3-button"><i class="fa fa-caret-right w3-margin-right"></i>Gestion des utilisateurs</a>
+					<a href="{{path('admin_backoffice_commande')}}" class="w3-bar-item w3-button"><i class="fa fa-caret-right w3-margin-right"></i>Gestion des commandes</a>
+				</div>
+			</div>
+		{% endif %}
+		<p class="w3-right" style="margin-top:18px;">
+			{% if is_granted('ROLE_USER') or is_granted('ROLE_ADMIN') %}
+				<a href="{{ path('app_logout') }}" class="w3-button w3-small w3-blue w3-margin-right"><b>Déconnexion</b></a>
+			{% else %}
+				<a href="{{ path('app_login') }}" class="w3-button w3-small w3-blue w3-margin-right"><b>Connexion</b></a>
+				<a href="{{ path('app_register') }}" class="w3-button w3-small w3-green w3-margin-right"><b>Inscription</b></a>
+			{% endif %}
+			<a href="" class="w3-button"><i class="fa fa-shopping-cart"></i></a>
+			<i class="fa fa-search"></i>
+		</p>
+	</header>
+</div>
